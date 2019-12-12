@@ -25,10 +25,8 @@ const BlogPost = ({ post }) => (
     </div>
 
     <div className="blog">
-      <h2 className="blog-title">
-        <Link href="/test1">
-          <a className="blog-title-link">{post.title}</a>
-        </Link>
+      <h2 className="blog-title">{post.title}
+
       </h2>
       <div className="blog-text">{ post.detail }</div>
       <div className="blog-date">{ post.date }</div>
@@ -70,7 +68,8 @@ const BlogPost = ({ post }) => (
 )
 
 BlogPost.getInitialProps = async ({ req, query }) => {
-  const res = await fetch(`http://mukemmelmyblog.herokuapp.com/api/post/${query.postId}`) //(`http://localhost:3000/api/post/${query.postId}`)
+  const res = await fetch(`http://mukemmelmyblog.herokuapp.com/api/post/${query.postId}`)
+  //const res = await fetch(`http://localhost:3000/api/post/${query.postId}`)
   const json = await res.json()
   return { post: json.post }
 }
