@@ -4,15 +4,7 @@ import Nav from '../components/nav'
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import ReactMarkdown from 'react-markdown'
-import { initGA, logPageView } from '../components/googleAnalytics'
 
-/*componentDidMount() {
-  if (!window.GA_INITIALIZED) {
-    initGA()
-    window.GA_INITIALIZED = true
-  }
-  logPageView()
-}*/
 const GA_TRACKING_ID = 'UA-154882262-1';
 const Home = ({ posts }) => (
   <div className="container">
