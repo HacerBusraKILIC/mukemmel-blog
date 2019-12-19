@@ -4,47 +4,67 @@ import Nav from '../components/nav'
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import ReactMarkdown from 'react-markdown'
+import { initGA, logPageView } from '../components/googleAnalytics'
 
-
+/*componentDidMount() {
+  if (!window.GA_INITIALIZED) {
+    initGA()
+    window.GA_INITIALIZED = true
+  }
+  logPageView()
+}*/
+const GA_TRACKING_ID = 'UA-154882262-1';
 const Home = ({ posts }) => (
   <div className="container">
     <Head>
+      <script async src={`https://www.googletagmanager.com/gtag/js?id${GA_TRACKING_ID}`}></script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '${GA_TRACKING_ID}');
+        `,
+        }}
+        />
+    
       <title>Home</title>
-      <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.ico" />
     </Head>
 
 
-    <div className="hero">
-      <h1 className="hero-title">Hacer Büşra KILIÇ</h1>
+      <div className="hero">
+        <h1 className="hero-title">Hacer Büşra KILIÇ</h1>
 
-      <div className="hero-social-links">
-        <Link href="https://twitter.com/hacerbusrakilic">
-          <a className="hero-social-link">Twitter</a>
-        </Link>
-        <Link href="https://www.linkedin.com/in/hacerbusrakilic/">
-          <a className="hero-social-link">LinedIn</a>
-        </Link>
-      </div>
-    </div>
-
-    {
-      posts.map(post => (
-        <div className="blog">
-          <h2 className="blog-title">
-            <Link href={post.slug}>
-              <a className="blog-title-link">{post.title}</a>
-            </Link>
-          </h2>
-          <div className="blog-text">
-            <ReactMarkdown source={post.detail} />
-          </div>
-          <div className="blog-date"> {post.date} </div>
+        <div className="hero-social-links">
+          <Link href="https://twitter.com/hacerbusrakilic">
+            <a className="hero-social-link">Twitter</a>
+          </Link>
+          <Link href="https://www.linkedin.com/in/hacerbusrakilic/">
+            <a className="hero-social-link">LinkedIn</a>
+          </Link>
         </div>
-      ))
-    }
+      </div>
+
+      {
+        posts.map(post => (
+          <div className="blog">
+            <h2 className="blog-title">
+              <Link href={post.slug}>
+                <a className="blog-title-link">{post.title}</a>
+              </Link>
+            </h2>
+            <div className="blog-text">
+              <ReactMarkdown source={post.detail} />
+            </div>
+            <div className="blog-date"> {post.date} </div>
+          </div>
+        ))
+      }
 
 
-    <style jsx>{`
+      <style jsx>{`
       .container {
         max-width: 650px;
         width: 100%;
@@ -76,13 +96,13 @@ const Home = ({ posts }) => (
       }
     `}</style>
   </div >
-)
-
-Home.getInitialProps = async ({ req }) => {
-  const res = await fetch('http://mukemmelmyblog.herokuapp.com/api/posts') 
-  //const res = await fetch('http://localhost:3000/api/posts')
-  const json = await res.json()
-  return { posts: json.posts }
-}
-
+    )
+    
+Home.getInitialProps = async ({req}) => {
+  const res = await fetch('http://mukemmelmyblog.herokuapp.com/api/posts')
+    //const res = await fetch('http://localhost:3000/api/posts')
+    const json = await res.json()
+  return {posts: json.posts }
+  }
+  
 export default Home
